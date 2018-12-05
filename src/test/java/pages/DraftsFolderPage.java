@@ -8,7 +8,7 @@ import org.openqa.selenium.support.FindBy;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DraftsFolderPage extends AbstractPage {
+public class DraftsFolderPage {
 
     @FindBy(xpath = ".//div[@class='b-datalist__item__addr']")
     private List<WebElement> addrList;

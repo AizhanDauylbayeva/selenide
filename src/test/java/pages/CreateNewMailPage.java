@@ -4,7 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class CreateNewMailPage extends AbstractPage {
+public class CreateNewMailPage {
 
     @FindBy(xpath = "//textarea[@data-original-name='To']")
     private WebElement addresseeTextArea;

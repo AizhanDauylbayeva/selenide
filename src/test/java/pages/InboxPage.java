@@ -1,24 +1,26 @@
 package pages;
 
-import org.openqa.selenium.WebElement;
+import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 
 import java.util.ArrayList;
 
-public class InboxPage extends AbstractPage {
+public class InboxPage {
 
-    @FindBy(xpath = "//*[@id='PH_user-email']")
-    private WebElement userEmailIdentificator;
+    @FindBy(how = How.ID, using = "PH_user-email")
+    private SelenideElement userEmailIdentificator;
 
     @FindBy(xpath = "//*[@id='b-toolbar__left']//span")
-    private WebElement createNewMailButton;
+    private SelenideElement createNewMailButton;
 
     @FindBy(xpath = "//span[@class='js-text-inner pm-toolbar__button__text__inner' and contains(string(), 'Облако')]")
-    private WebElement cloudButton;
+    private SelenideElement cloudButton;
 
-    public boolean isUserSignedIn() {
+    public void assertUserSignedIn() {
         waitForElementVisible(userEmailIdentificator);
-        return userEmailIdentificator.isDisplayed();
+        userEmailIdentificator.shouldBe(Condition.visible);
     }
 
     public InboxPage openWriteNewMail() {

@@ -8,7 +8,7 @@ import org.openqa.selenium.support.FindBy;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SentFolderPage extends AbstractPage {
+public class SentFolderPage {
 
     @FindBy(xpath = ".//div[@class='b-datalist__item__panel']")
     private List<WebElement> mails;

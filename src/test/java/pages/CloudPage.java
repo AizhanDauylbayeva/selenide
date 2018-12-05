@@ -8,7 +8,7 @@ import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
 
-public class CloudPage extends AbstractPage {
+public class CloudPage {
     private Actions action = new Actions(driver);
 
     @FindBy(xpath = "//div[@data-id='/Pictures']/*[@class='b-thumb__content']")
