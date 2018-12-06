@@ -1,8 +1,10 @@
 package pages;
 
-import org.openqa.selenium.WebDriver;
+import com.codeborne.selenide.Condition;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+
+import static com.codeborne.selenide.Selenide.switchTo;
 
 public class CreateNewMailPage {
 
@@ -40,9 +42,9 @@ public class CreateNewMailPage {
     }
 
     public void fillBody(String content) {
-        driver.switchTo().frame(0);
+        switchTo().frame(0);
         bodyTextArea.sendKeys(content);
-        driver.switchTo().defaultContent();
+        switchTo().defaultContent();
     }
 
     public void saveDraft() {

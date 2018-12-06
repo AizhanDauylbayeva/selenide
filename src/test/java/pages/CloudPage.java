@@ -1,91 +1,46 @@
 package pages;
 
-import org.openqa.selenium.JavascriptExecutor;
+import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.Selenide;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.FindBy;
 
-import java.util.List;
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selectors.byText;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selectors.byXpath;
+
 
 public class CloudPage {
-    private Actions action = new Actions(driver);
-
-    @FindBy(xpath = "//div[@data-id='/Pictures']/*[@class='b-thumb__content']")
-    private WebElement picturesFolder;
-
-    @FindBy(xpath = "//div[@class='b-panel__close__icon']")
-    private WebElement closepanel;
-
-    @FindBy(xpath = "//div[@data-group='create']")
-    private WebElement create;
-
-    @FindBy(xpath = "//span[contains(string(), 'Папку')]")
-    private WebElement createFolder;
-
-    @FindBy(xpath = "//div[@class='b-filename__text']")
-    private List<WebElement> fileNameList;
-
-    @FindBy(xpath = "//div[@data-id='/Новая папка']//div[@class='b-checkbox__box']")
-    private WebElement newFolderCheckbox;
-
-    @FindBy(xpath = "//span[@class='b-toolbar__btn__text b-toolbar__btn__text_pad' and contains(string(), 'Удалить')]")
-    private WebElement remove;
-
-    @FindBy(xpath = "//button[@data-name='remove']")
-    private WebElement removeButton;
-
-    @FindBy(xpath = "//div[@class='layer__footer']/button[@data-name='close']")
-    private WebElement okClose;
 
     public void closePanel() {
-        JavascriptExecutor executor = (JavascriptExecutor) driver;
-        executor.executeScript("arguments[0].click();", closepanel);
+        $(By.xpath("//div[@class='b-panel__close__icon']")).waitUntil(Condition.visible, 5000).click();
     }
 
-    private List<WebElement> getFileNameList() {
-        return fileNameList;
-    }
-
-    public CloudPage moveMouseToPicturesFolder() {
-        waitForElementEnabled(picturesFolder);
-        action.moveToElement(picturesFolder).perform();
-        return this;
-    }
-
-    public PicturesFolderCloudPage doubleClick() {
-        action.doubleClick().perform();
+    public PicturesFolderCloudPage openPicturesFolder() {
+       $(byXpath("//div[@data-id='/Pictures']/*[@class='b-thumb__content']")).click();
         return new PicturesFolderCloudPage();
     }
 
     public void createFolder() {
-        action
-                .click(create)
-                .click(createFolder)
-                .sendKeys(Keys.ENTER)
-                .build()
-                .perform();
+        $(byXpath("//div[@data-group='create']")).click();
+        $(byXpath("//span[contains(string(), 'Папку')]")).click();
+        //Selenide.actions().sendKeys(Keys.ENTER);
+        $(byXpath("//button[@data-name=\"add\"]")).click();
     }
 
     public void removeTheNewFolder() {
-        action
-                .click(newFolderCheckbox)
-                .click(remove)
-                .click(removeButton)
-                .click(okClose)
-                .build()
-                .perform();
+        $(byXpath("//div[@data-id='/Новая папка']//div[@class='b-checkbox__box']")).click();
+        $(byXpath("//span[@class='b-toolbar__btn__text b-toolbar__btn__text_pad' and contains(string(), 'Удалить')]")).click();
+        $(byXpath("//button[@data-name='remove']")).click();
+        $(byXpath("//div[@class='layer__footer']/button[@data-name='close']")).click();
     }
 
     public boolean isFolderExist() {
-        List<WebElement> list = getFileNameList();
-        boolean isExist = false;
-        for (WebElement filename : list) {
-            if (isExist = filename.getText().equals("Новая папка")) {
-                highlightElement(filename);
-                break;
-            }
-        }
-        return isExist;
+        $$(byXpath("//div[@class='b-filename__text']")).find(byText("Новая папка")).shouldBe(visible);
+        return true;
     }
 }
+
+//https://www.programcreek.com/java-api-examples/?class=com.codeborne.selenide.SelenideElement&method=findAll

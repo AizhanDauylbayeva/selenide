@@ -1,11 +1,11 @@
 package pages;
 
-import utils.WebDriverSingleton;
+import com.codeborne.selenide.Selenide;
 
 public class PicturesFolderCloudPage{
 
     public String getTitle() {
-        return WebDriverSingleton.getWebDriverInstance().getTitle();
+        return Selenide.title();
     }
 
 }

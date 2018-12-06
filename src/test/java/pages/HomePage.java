@@ -2,12 +2,11 @@ package pages;
 
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.support.FindBy;
-
-import static com.codeborne.selenide.Selenide.open;
+import org.openqa.selenium.support.How;
 
 public class HomePage {
 
-    @FindBy(id = "mailbox:login")
+    @FindBy(how = How.ID, using ="mailbox:login")
     private SelenideElement username;
 
     @FindBy(id = "mailbox:password")
@@ -18,11 +17,6 @@ public class HomePage {
 
     @FindBy(xpath = "//*[@id='mailbox:domain']/option[4]")
     private SelenideElement domain;
-
-    public HomePage openMailRu() {
-        open("https://mail.ru");
-        return this;
-    }
 
     public InboxPage login(String name, String pass) {
         username.val(name).pressEnter();

@@ -4,7 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import utils.WebDriverSingleton;
+import com.codeborne.selenide.Selenide;
 import pages.*;
 
 public class MailTest {
@@ -26,7 +26,7 @@ public class MailTest {
 
     @Test(description = "Login test")
     public void loginTest() {
-        inbox = new HomePage().openMailRu().login(user.getUsername(), user.getPass());
+        inbox = new HomePage().login(user.getUsername(), user.getPass());
         inbox.assertUserSignedIn();
     }
 
@@ -43,7 +43,7 @@ public class MailTest {
     @Test(dependsOnMethods = "saveNewMailTest")
     public void testContent() {
         newMailPage.openDraftsFolder();
-        WebDriverSingleton.getWebDriverInstance().navigate().refresh();
+        Selenide.refresh();
         Assert.assertTrue(draftsFolderPage.isSavedMailExist(mail), "The draft content isn't the same as in mail");
     }
 
@@ -55,22 +55,18 @@ public class MailTest {
     @Test(dependsOnMethods = "testSecondMail")
     public void sendMailTest() {
         draftsFolderPage.openMail(mail);
-        WebDriverSingleton.getWebDriverInstance().navigate().refresh();
+        Selenide.refresh();
         newMailPage.sendMail();
         draftsFolderPage.openDraftsFolder();
-        WebDriverSingleton.getWebDriverInstance().navigate().refresh();
+        Selenide.refresh();
         Assert.assertFalse(draftsFolderPage.isSavedMailExist(mail), "The mail didn't disappear from 'Drafts' folder");
     }
 
     @Test(dependsOnMethods = "sendMailTest")
     public void sentFolderTest() {
         draftsFolderPage.openSentFolder();
-        WebDriverSingleton.getWebDriverInstance().navigate().refresh();
+        Selenide.refresh();
         Assert.assertTrue(sentPage.isSentMailExist(mail), "The sent letter isn't in 'Sent' folder");
     }
 
-    @AfterClass(description = "closePanel browser")
-    public void kill(){
-        WebDriverSingleton.kill();
-    }
 }

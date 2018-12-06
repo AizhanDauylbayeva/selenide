@@ -2,10 +2,13 @@ package pages;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-import java.util.ArrayList;
+import static com.codeborne.selenide.Selectors.byTitle;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.switchTo;
 
 public class InboxPage {
 
@@ -13,13 +16,9 @@ public class InboxPage {
     private SelenideElement userEmailIdentificator;
 
     @FindBy(xpath = "//*[@id='b-toolbar__left']//span")
-    private SelenideElement createNewMailButton;
-
-    @FindBy(xpath = "//span[@class='js-text-inner pm-toolbar__button__text__inner' and contains(string(), 'Облако')]")
-    private SelenideElement cloudButton;
+    private WebElement createNewMailButton;
 
     public void assertUserSignedIn() {
-        waitForElementVisible(userEmailIdentificator);
         userEmailIdentificator.shouldBe(Condition.visible);
     }
 
@@ -29,9 +28,8 @@ public class InboxPage {
     }
 
     public CloudPage openCloudPage() {
-        cloudButton.click();
-        ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
-        driver.switchTo().window(tabs.get(1));
+        $(byTitle("Облако")).click();
+        switchTo().window(1);
         return new CloudPage();
     }
 }

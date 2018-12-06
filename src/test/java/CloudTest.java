@@ -1,22 +1,24 @@
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
+
+import com.codeborne.selenide.Selenide;
 import org.testng.annotations.Test;
 import pages.PicturesFolderCloudPage;
-import utils.WebDriverSingleton;
 
 public class CloudTest extends Base{
 
+/*
     @Test(description = "Login test")
     public void loginTest() {
         inbox.assertUserSignedIn();
     }
+*/
 
-    @Test(dependsOnMethods = "loginTest")
+    @Test
     public void createFolder() {
         cloudPage = inbox.openCloudPage();
         cloudPage.closePanel();
         cloudPage.createFolder();
-        WebDriverSingleton.getWebDriverInstance().navigate().refresh();
+        Selenide.refresh();
         Assert.assertTrue(cloudPage.isFolderExist(), "The folder doesn't created");
     }
 
@@ -28,12 +30,8 @@ public class CloudTest extends Base{
 
     @Test(dependsOnMethods = "removeTheFolder")
     public void doubleClickTest() {
-        PicturesFolderCloudPage picturesFolderPage = cloudPage.moveMouseToPicturesFolder().doubleClick();
+        PicturesFolderCloudPage picturesFolderPage = cloudPage.openPicturesFolder();
         Assert.assertEquals(picturesFolderPage.getTitle(), "Pictures / Облако Mail.Ru", "The title is wrong");
     }
 
-    @AfterClass(description = "closePanel browser")
-    public void kill() {
-        WebDriverSingleton.kill();
-    }
 }
